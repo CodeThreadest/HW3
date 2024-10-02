@@ -26,8 +26,12 @@ public class TreeProblems {
     // This can be done numerous ways, but once such will only that
     // *several* lines of code. Hint: create two temporary TreeSets and utilize the
     // methods retainAll(), addAll(), and removeAll(). But in the end, get something to work.
-
-    return setA;
+    Set<Integer> tempSetA = new TreeSet<>(setA);
+    Set<Integer> tempSetB = new TreeSet<>(setB);
+    tempSetA.retainAll(setB);
+    tempSetB.addAll(setA);
+    tempSetB.removeAll(tempSetA);
+    return tempSetB;
   }
 
 
@@ -41,7 +45,7 @@ public class TreeProblems {
   public static void removeEven(Map<Integer, String> treeMap) {
 
     // INSERT CODE HERE.
-
+    treeMap.keySet().removeIf(key -> key % 2 ==0); // remove if the remainder of the key / 2 is 0
     return;
   }
 
@@ -56,8 +60,7 @@ public class TreeProblems {
   public boolean treesEqual(Map<Integer, String> tree1,Map<Integer, String> tree2 ) {
 
     // INSERT CODE HERE
-
-    return false;
+    return tree1.equals(tree2);
 
   }
 
