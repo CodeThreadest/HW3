@@ -46,7 +46,7 @@ public class TreeProblems {
 
     // INSERT CODE HERE.
     treeMap.keySet().removeIf(key -> key % 2 ==0); // remove if the remainder of the key / 2 is 0
-    return;
+
   }
 
 
