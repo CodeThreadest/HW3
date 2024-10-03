@@ -342,10 +342,9 @@ class LUC_AVLTree {
      */
 
     private Node deleteElement(int value, Node node) {
-
         /*
          * ADD CODE HERE
-         * 
+         *
          * NOTE, that you should use the existing coded private methods
          * in this file, which include:
          *      - minValueNode,
@@ -361,9 +360,63 @@ class LUC_AVLTree {
          * code for each. You can also look at the method InsertElement, as it has do
          * do many of the same things as this method.
          */
+        //check if node is null
+        if (node == null) {
+            return node;
+        }
+
+        //Check if value is less than node value and greater than otherwise check if children is null
+        if (value < node.value) {
+            node.leftChild = deleteElement(value, node.leftChild);
+        } else if (value > node.value) {
+            node.rightChild = deleteElement(value, node.rightChild);
+        } else {
+            if (node.leftChild == null) {
+                return node.rightChild;  // Return the right child
+            } else if (node.rightChild == null) {
+                return node.leftChild;  // Return the left child
+            }
+
+            // temporary Node holding minValue of the right subtree
+            Node nodeTemp = minValueNode(node.rightChild);
+            //replace node value with temporary node value
+            node.value = nodeTemp.value;
+            //delete value from node right child
+            node.rightChild = deleteElement(nodeTemp.value, node.rightChild);
+        }
+
+        // Update the height of the current node based on the current tree
+        node.height = Math.max(getHeight(node.leftChild), getHeight(node.rightChild)) + 1;
+
+        // Get the balance factor of the current node
+        int balance = getBalanceFactor(node);
+
+        // Check if node is unbalanced and perform rotations if necessary
+        // Left Left Case
+        if (balance > 1 && getBalanceFactor(node.leftChild) >= 0) {
+            return LLRotation(node);
+        }
+
+        // Left Right Case
+        if (balance > 1 && getBalanceFactor(node.leftChild) < 0) {
+            node.leftChild = RRRotation(node.leftChild);
+            return LLRotation(node);
+        }
+
+        // Right Right Case
+        if (balance < -1 && getBalanceFactor(node.rightChild) <= 0) {
+            return RRRotation(node);
+        }
+
+        // Right Left Case
+        if (balance < -1 && getBalanceFactor(node.rightChild) > 0) {
+            node.rightChild = LLRotation(node.rightChild);
+            return RRRotation(node);
+        }
 
         return node;
     }
+
 
 
     /**
